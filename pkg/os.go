@@ -23,7 +23,7 @@ func exists(name string) bool {
 // 2. is there a 'deafultNamefile.yml'?
 // 3. is there a '<filenameHere>.<yml|yaml>'?
 // Returns the filename
-func readFileOrDir(defaultName string, defaultPath string) (file string, fail error) {
+func ReadFileOrDir(defaultName string, defaultPath string) (file string, fail error) {
 	read, fail := os.Stat(defaultPath)
 
 	if nil != fail {
