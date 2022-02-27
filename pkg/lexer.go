@@ -6,7 +6,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type projectFunc func(map[interface{}]interface{}) (project interface{}, fail error)
+type projectFunc func(map[interface{}]interface{}) (interface{}, error)
 
 // checkConfig looks for the config file
 // It returns the file or an error
