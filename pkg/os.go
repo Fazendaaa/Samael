@@ -1,6 +1,7 @@
 package samael
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -44,7 +45,7 @@ func readFileOrDir(defaultName string, defaultPath string) (file string, fail er
 			return yml, fail
 		}
 
-		return file, fail
+		return file, fmt.Errorf("missing project file in %s", defaultPath)
 	case mode.IsRegular():
 		return defaultPath, fail
 	}
