@@ -5,7 +5,7 @@ import (
 )
 
 func TestReadFileOrDir(t *testing.T) {
-	t.Run("default", func(t *testing.T) {
+	t.Run("missing", func(t *testing.T) {
 		value, fail := readFileOrDir("shojo", "../test/config/missing")
 
 		if nil == fail {

@@ -6,18 +6,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type projectFunc func(map[interface{}]interface{}) (interface{}, error)
+type projectFunc func(string, map[interface{}]interface{}) (interface{}, error)
 
 // checkConfig looks for the config file
 // It returns the file or an error
-func checkConfig(defaultName string, projectPath string) (data []byte, fail error) {
-	file, fail := readFileOrDir(defaultName, projectPath)
-
-	if nil != fail {
-		return nil, fail
-	}
-
-	read, fail := ioutil.ReadFile(file)
+func checkConfig(filename string) (data []byte, fail error) {
+	read, fail := ioutil.ReadFile(filename)
 
 	if nil != fail {
 		return nil, fail
@@ -29,8 +23,18 @@ func checkConfig(defaultName string, projectPath string) (data []byte, fail erro
 // LexProject just reads the given Succubus config file and checks it whether
 // or not it's a valid one.
 // It returns whether or not the config file is valid and any error encountered.
-func LexProject(defaultName string, projectPath string, interfaceToProject projectFunc) (project interface{}, fail error) {
-	data, fail := checkConfig(defaultName, projectPath)
+func LexProject(defaultName string,
+	projectPath string,
+	interfaceToProject projectFunc) (
+	project interface{},
+	fail error) {
+	filename, fail := readFileOrDir(defaultName, projectPath)
+
+	if nil != fail {
+		return nil, fail
+	}
+
+	data, fail := checkConfig(filename)
 
 	if nil != fail {
 		return project, fail
@@ -43,5 +47,5 @@ func LexProject(defaultName string, projectPath string, interfaceToProject proje
 		return project, fail
 	}
 
-	return interfaceToProject(read)
+	return interfaceToProject(filename, read)
 }
