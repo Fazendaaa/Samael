@@ -21,7 +21,7 @@ func checkPath(path string) error {
 	return nil
 }
 
-func validPath(command string) func(*cobra.Command, []string) error {
+func ValidPath(command string) func(*cobra.Command, []string) error {
 	return func(cmd *cobra.Command, params []string) error {
 		if 1 != len(params) {
 			return fmt.Errorf(`missing project path!
@@ -35,7 +35,7 @@ Otherwise you may try to:
 	}
 }
 
-func validateProjectPath(projectPath string) func(*cobra.Command, []string) error {
+func ValidateProjectPath(projectPath string) func(*cobra.Command, []string) error {
 	return func(cmd *cobra.Command, params []string) error {
 		if 1 > len(params) {
 			return fmt.Errorf("requires at least 1 arg(s), only received 0")

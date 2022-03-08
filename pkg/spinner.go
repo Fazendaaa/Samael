@@ -7,7 +7,7 @@ import (
 	"github.com/theckman/yacspin"
 )
 
-func createSpinner(suffix string, message string) (spinner *yacspin.Spinner, fail error) {
+func CreateSpinner(suffix string, message string) (spinner *yacspin.Spinner, fail error) {
 	config := yacspin.Config{
 		Frequency:         100 * time.Millisecond,
 		CharSet:           yacspin.CharSets[35],
@@ -35,7 +35,7 @@ func createSpinner(suffix string, message string) (spinner *yacspin.Spinner, fai
 	return spinner, fail
 }
 
-func killSpinner(spinner *yacspin.Spinner, ok bool) (fail error) {
+func KillSpinner(spinner *yacspin.Spinner, ok bool) (fail error) {
 	if !ok {
 		fail = spinner.StopFail()
 		if nil != fail {
