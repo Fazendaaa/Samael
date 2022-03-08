@@ -54,3 +54,32 @@ func ValidateProjectPath(projectPath string) func(*cobra.Command, []string) erro
 		return checkPath(projectPath)
 	}
 }
+
+type toConsume func(params []string, projectPath string) (channel chan ResponseChannel)
+
+func RunCmd(projectPath *string, message string, function toConsume) func(cmd *cobra.Command, params []string) {
+	return func(cmd *cobra.Command, params []string) {
+		spinner, fail := CreateSpinner(message, "")
+
+		if nil != fail {
+			fmt.Println()
+			fmt.Println(fail)
+
+			return
+		}
+
+		resultChannel := function(params, *projectPath)
+		fail = ConsumeChannel(params, spinner, resultChannel)
+
+		if nil != fail {
+			fmt.Println()
+			fmt.Println(fail)
+
+			KillSpinner(spinner, false)
+
+			return
+		}
+
+		KillSpinner(spinner, true)
+	}
+}
