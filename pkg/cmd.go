@@ -55,7 +55,7 @@ func ValidateProjectPath(projectPath string) func(*cobra.Command, []string) erro
 	}
 }
 
-type toConsume func(params []string, projectPath string) (channel chan ResponseChannel)
+type toConsume func(params []string, projectPath string) (channel chan ResponseChannel, fail error)
 
 func RunCmd(projectPath *string, message string, function toConsume) func(cmd *cobra.Command, params []string) {
 	return func(cmd *cobra.Command, params []string) {
@@ -68,7 +68,15 @@ func RunCmd(projectPath *string, message string, function toConsume) func(cmd *c
 			return
 		}
 
-		resultChannel := function(params, *projectPath)
+		resultChannel, fail := function(params, *projectPath)
+
+		if nil != fail {
+			fmt.Println()
+			fmt.Println(fail)
+
+			return
+		}
+
 		fail = ConsumeChannel(params, spinner, resultChannel)
 
 		if nil != fail {
